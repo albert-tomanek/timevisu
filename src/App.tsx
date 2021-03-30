@@ -1,8 +1,27 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { AutoSizer, Grid, InfiniteLoader, InfiniteLoaderProps } from 'react-virtualized';
-// import { Virtual } from 'react-virtual-dynamic-list';   // This doesn't have types. Had to set noImplicitAny to false in tsconfig.json. https://medium.com/@chris_72272/migrating-to-typescript-write-a-declaration-file-for-a-third-party-npm-module-b1f75808ed2
+import { FixedSizeListProps, FixedSizeList } from 'react-window';
+
+/* CSS manipulation */
+
+function get_css_class(name: string): CSSStyleRule | null {
+    for (var i = 0; i < document.styleSheets.length; i++) {
+        var sheet: CSSStyleSheet = document.styleSheets[i];
+
+        for (var j = 0; j < sheet.cssRules.length; j++) {
+            var rule = sheet.rules[j];
+
+            if (rule instanceof CSSStyleRule) {
+                if (rule.selectorText == name) {
+                    return rule;
+                }
+            }
+        }
+    }
+
+    return null;
+}
 
 /* Holidays */
 
@@ -34,15 +53,15 @@ interface DayState {
     date: Date
 }
 
-interface DayProps {
+interface DayProps extends React.HTMLAttributes<unknown> {
     offset: number
 }
-
+//18717
 class Day extends React.Component<DayProps, DayState> {
 	constructor(props: DayProps) {
 		super(props);
 
-        var d = new Date();
+        var d = new Date(0);
         d.setDate(d.getDate() + props.offset);
         this.state = {
             date: d
@@ -50,7 +69,7 @@ class Day extends React.Component<DayProps, DayState> {
 	}
 
     get_indicator(): JSX.Element {
-      var now = this.state.date
+      var now = new Date();//this.state.date;
       var day_fract = (60 * now.getHours() + now.getMinutes()) / (60 * 24);
 
       return (
@@ -65,11 +84,11 @@ class Day extends React.Component<DayProps, DayState> {
         if  (day_no == 0 || day_no == 6)  { class_name += ' day-weekend'; }
 
         return (
-          <div className={class_name}>
+          <div className={class_name} style={this.props.style}>
             {Day.is_holiday(this.state.date) ? <div className="holiday-marker"/> : null}
             <h2 className="day-no">{this.state.date.getDate()}</h2>
             <h3 className="day-name">{Day.names[day_no]}</h3>
-            {this.props.offset == 0 ? this.get_indicator() : null}
+            {this.props.offset == Day.since_epoch(new Date()) ? this.get_indicator() : null}
           </div>
         );
 	}
@@ -79,57 +98,57 @@ class Day extends React.Component<DayProps, DayState> {
     static names: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     static is_holiday(date: Date) {
-      for (var i = 0; i < HOLIDAYS.length; i++) {
-        var start = date_from_tuple(HOLIDAYS[i].start);
-        var end   = date_from_tuple(HOLIDAYS[i].end);
+        for (var i = 0; i < HOLIDAYS.length; i++) {
+            var start = date_from_tuple(HOLIDAYS[i].start);
+            var end   = date_from_tuple(HOLIDAYS[i].end);
 
-        if (start.getTime() <= date.getTime() && date.getTime() < end.getTime())
-        {
-          return true;
+            if (start.getTime() <= date.getTime() && date.getTime() < end.getTime())
+            {
+                return true;
+            }
         }
-      }
 
-      return false;
+        return false;
+    }
+
+    static since_epoch(date: Date): number      // Days since the epoch
+    {
+        var diff = date.getTime() - (new Date(0)).getTime();
+        return Math.floor(diff / (24*60*60*1000));
     }
 }
 
-// class DaysView extends InfiniteLoader
-// {
-//     constructor(props: InfiniteLoaderProps) {
-//         props.isRowLoaded  = this.is_row_loaded;
-//         props.loadMoreRows = this.load_more_rows;
-//         props.rowCount = this.row_count;
-//         super(props);
-//     }
-//
-//     is_row_loaded (params: Index) => boolean {
-//         return true;
-//     }
-// }
+class DayView extends FixedSizeList
+{
+    constructor(props: FixedSizeListProps) {
+        super(props);
+    }
+
+    componentDidMount() {
+        var idx = Day.since_epoch(new Date);
+        this.scrollToItem(idx, "center");
+    }
+}
 
 function App() {
+    var day_style = get_css_class(".day-tile")?.style;
+    var day_view: React.RefObject<DayView> = React.createRef();
+
     return (
         <div className="App">
-            {/* <Virtual
-                className="days-container"
-                items={[0,1,2,3,4,5,6,7]}
-                renderItem={idx => (<Day offset={idx} />)}
-            /> */}
-            <AutoSizer>
-              {({ height, width }) => (
-                <Grid
-                  cellRenderer={({ columnIndex, key, rowIndex, style }) => <div key={key} style={style}>...</div>}
-                  columnCount={numColumns}
-                  columnWidth={100}
-                  height={600}
-                  rowCount={1}
-                  rowHeight={600}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
+            <DayView
+                ref={day_view}
+                className="days-strip"
+                height={day_style ? parseInt(day_style.height) : 20}
+                width={600}
+                itemCount={45000}
+                itemSize={day_style ? parseInt(day_style.width) + parseInt(day_style.borderWidth) : 20}
+                layout="horizontal"
+            >
+                {({index, style}) => { return (<Day offset={index} style={{position: style.position, top: style.top, left: style.left}}/>);}}
+            </DayView>
         </div>
     );
 }
-// react-window
+
 export default App;
