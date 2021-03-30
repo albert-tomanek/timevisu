@@ -10,9 +10,13 @@
     "@types/node": "^12.20.7",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "dependencies": "0.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-virtual-dynamic-list": "^0.5.13",
+    "react-virtualized": "^9.22.3",
+    "react-window": "^1.8.6",
     "typescript": "^4.2.3",
     "web-vitals": "^1.1.1"
   },
@@ -39,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-virtualized": "^9.21.11"
   }
 }
