@@ -5,7 +5,7 @@ import { FixedSizeListProps, FixedSizeList } from 'react-window';
 
 /* CSS manipulation */
 
-function get_css_class(name: string): CSSStyleRule | null {
+function get_css_class(selector: string): CSSStyleRule {
     for (var i = 0; i < document.styleSheets.length; i++) {
         var sheet: CSSStyleSheet = document.styleSheets[i];
 
@@ -13,14 +13,14 @@ function get_css_class(name: string): CSSStyleRule | null {
             var rule = sheet.rules[j];
 
             if (rule instanceof CSSStyleRule) {
-                if (rule.selectorText == name) {
+                if (rule.selectorText == selector) {
                     return rule;
                 }
             }
         }
     }
 
-    return null;
+    throw new Error('Style `' + selector + '` not found.');
 }
 
 /* Holidays */
@@ -35,16 +35,19 @@ var HOLIDAYS = [
     {"name": "Podzimní prázdniny",   "start": [2019, 10, 28], "end": [2019, 10, 30]},
     {"name": "Den boje za dem.",     "start": [2019, 11, 17], "end": [2019, 11, 18]},
     {"name": "Vánoční prázdniny",    "start": [2019, 12, 23], "end": [2020,  1,  5]},
+
+    {"name": "Pololetní prázdniny",  "start": [2019,  2,  1], "end": [2019,  2,  2]},
+    {"name": "Jarní prázdniny",      "start": [2019,  2, 18], "end": [2019,  2, 24]},
+    {"name": "Velikonoc. prázdniny", "start": [2021,  4,  1], "end": [2021,  4,  4]},
+    {"name": "Summer holidays",      "start": [2019,  6, 28], "end": [2019,  9,  2]},
+    {"name": "Den české státnosti",  "start": [2019,  9, 28], "end": [2019,  9, 29]},
+    {"name": "Podzimní prázdniny",   "start": [2019, 10, 28], "end": [2019, 10, 30]},
+    {"name": "Den boje za dem.",     "start": [2019, 11, 17], "end": [2019, 11, 18]},
+    {"name": "Vánoční prázdniny",    "start": [2019, 12, 23], "end": [2020,  1,  5]},
 ];
 
 function date_from_tuple (dtup: number[]) {
-    var d = new Date();
-
-    d.setFullYear(dtup[0]);
-    d.setMonth(dtup[1] - 1);
-    d.setDate(dtup[2]);
-
-    return d;
+    return new Date(dtup[0], dtup[1] - 1, dtup[2]);
 }
 
 /* Day */
@@ -61,10 +64,8 @@ class Day extends React.Component<DayProps, DayState> {
 	constructor(props: DayProps) {
 		super(props);
 
-        var d = new Date(0);
-        d.setDate(d.getDate() + props.offset);
         this.state = {
-            date: d
+            date: new Date((1000*60*60*24)*props.offset)
         };
 	}
 
@@ -83,12 +84,15 @@ class Day extends React.Component<DayProps, DayState> {
         var class_name = 'day-tile';
         if  (day_no == 0 || day_no == 6)  { class_name += ' day-weekend'; }
 
+        var label = <div className="day-label">Today!</div>
+
         return (
           <div className={class_name} style={this.props.style}>
-            {Day.is_holiday(this.state.date) ? <div className="holiday-marker"/> : null}
+            {Day.is_holiday(this.state.date) ? <div className="day-holiday"/> : null}
             <h2 className="day-no">{this.state.date.getDate()}</h2>
             <h3 className="day-name">{Day.names[day_no]}</h3>
             {this.props.offset == Day.since_epoch(new Date()) ? this.get_indicator() : null}
+            {this.props.offset == Day.since_epoch(new Date()) ? label : null}
           </div>
         );
 	}
@@ -104,6 +108,7 @@ class Day extends React.Component<DayProps, DayState> {
 
             if (start.getTime() <= date.getTime() && date.getTime() < end.getTime())
             {
+                console.log(date.toString() + "is a holiday")
                 return true;
             }
         }
@@ -139,13 +144,13 @@ function App() {
             <DayView
                 ref={day_view}
                 className="days-strip"
-                height={day_style ? parseInt(day_style.height) : 20}
-                width={600}
+                height={2*parseInt(day_style.borderWidth) + parseInt(day_style.height) + parseInt(day_style.marginTop) + parseInt(day_style.marginBottom)}
+                width={700}
                 itemCount={45000}
-                itemSize={day_style ? parseInt(day_style.width) + parseInt(day_style.borderWidth) : 20}
+                itemSize={parseInt(day_style.borderWidth) + parseInt(day_style.width)}
                 layout="horizontal"
             >
-                {({index, style}) => { return (<Day offset={index} style={{position: style.position, top: style.top, left: style.left}}/>);}}
+                {({index, style}) => { return (<div><Day offset={index} style={{position: style.position, left: style.left}}/></div>);}}
             </DayView>
         </div>
     );
