@@ -6,6 +6,7 @@ import { TileState, TileProps, Tile, TileStrip } from './Tile';
 
 // import { Decade, DecadeStrip } from './Decade';
 const { Day, DayStrip }       = require('./Day.tsx');
+const { Year, YearStrip }     = require('./Year.tsx');
 const { Decade, DecadeStrip } = require('./Decade.tsx');    // Uhh. :-\ See: https://github.com/Microsoft/TypeScript/issues/14558#issuecomment-385846741
 
 /* CSS manipulation */
@@ -30,7 +31,13 @@ export function get_css_class(selector: string): CSSStyleRule {
 
 /* Holidays */
 
-export var HOLIDAYS = [
+export interface Holiday {
+    name:  string,
+    start: number[],
+    end:   number[],
+}
+
+export var HOLIDAYS: Holiday[] = [
     {"name": "Vánoční prázdniny",    "start": [2018, 12, 22], "end": [2019,  1,  2]},
     {"name": "Pololetní prázdniny",  "start": [2019,  2,  1], "end": [2019,  2,  2]},
     {"name": "Jarní prázdniny",      "start": [2019,  2, 18], "end": [2019,  2, 24]},
@@ -60,7 +67,11 @@ export function date_from_tuple (dtup: number[]) {
 function App() {
     return (
         <div className="App">
+            <h2>Days</h2>
             <DayStrip/>
+            <h2>Years</h2>
+            <YearStrip/>
+            <h2>Decades</h2>
             <DecadeStrip/>
         </div>
     );

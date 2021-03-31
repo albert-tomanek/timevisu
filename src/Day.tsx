@@ -102,7 +102,7 @@ export class DayStrip extends TileStrip<DayStripProps, {}>
             <FixedSizeList
                 ref={view => {if (view != null) {(view as FixedSizeList).scrollToItem(Day.since_epoch(new Date), "center"); }}}
                 className="tile-strip"
-                height={200}
+                height={160}
                 width={800}
                 itemCount={45000}
                 itemSize={parseInt(tile_style.borderWidth) + parseInt(day_style.width)}

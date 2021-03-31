@@ -58,7 +58,7 @@ export class DecadeStrip extends TileStrip<{}, {}>
             <FixedSizeList
                 ref={view => {if (view != null) {(view as FixedSizeList).scrollToItem(((new Date).getFullYear() - DecadeStrip.first) / 10, "center"); }}}
                 className="tile-strip"
-                height={200}
+                height={160}
                 width={800}
                 itemCount={(DecadeStrip.last - DecadeStrip.first) / 10}
                 itemSize={parseInt(tile_style.borderWidth) + parseInt(decade_style.width)}

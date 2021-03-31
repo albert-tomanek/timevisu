@@ -32,7 +32,7 @@ export abstract class Tile<P extends TileProps = TileProps, S extends TileState 
         }
     }
 
-    abstract render_tile(): React.ReactNode;
+    abstract render_tile(): JSX.Element;
 
     render() {
         return (
