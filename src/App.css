@@ -2,40 +2,31 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     font-family: helvetica;
 }
-
 .App > h2 {
     width: 100%;
-    /* margin: 30px 48px; */
-    margin-left: 48px;
+    box-sizing: border-box;     /* Count padding too */
+    /* padding-left: 48px; */
+    padding: 30px;
+    margin: 0;
 
     font-size: 36pt;
     font-weight: bold;
 }
 
-.calendar-nav {
-  display: inline-block;
-  background: blue;
-  width: 48px;
-  height: 100%;
-  margin-right: 6px;
-  margin-left:  6px;
-  vertical-align: top;  /* Remove TODO */
-
-  font-weight: bold;
-  color: white;
-  text-align: center;
+.tile-strip-parent {
+    width: 100%;
+    flex: 1;
 }
-
 .tile-strip {
     display: block;
 
     background-color: rgba(255,255,255,0.7);
-    /* scrollbar-width: none; */
+    scrollbar-width: none;
     overflow-y: hidden !important;  /* Override the default setting of the scrollable list */
 }
 
@@ -135,4 +126,15 @@
   height: 48px;
   background: hsl(0, 0%, 90%); /*lightgray*/;
   z-index: -1;
+}
+
+.photo-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: blue;
+    top: 0;
+    border-radius: 50%;
+    transform: translate(0,-65%);
+    left: 55%;
 }

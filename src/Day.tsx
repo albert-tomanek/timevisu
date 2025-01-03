@@ -1,5 +1,6 @@
 import React from 'react';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
 import { get_css_class, date_from_tuple, HOLIDAYS } from './App';
 
@@ -23,7 +24,12 @@ export class Day extends Tile<DayProps, DayState> {
         };
 
         if (this.state.date.getDate() == 1) {
-            this.state.labels.push(Day.month_names_full[this.state.date.getMonth()]);
+            var month = this.state.date.getMonth();
+            if (month == 0) {
+                this.state.labels.push(Day.month_names_full[month] + ' ' + this.state.date.getFullYear());
+            } else {
+                this.state.labels.push(Day.month_names_full[month]);
+            }
         }
 	}
 
@@ -99,19 +105,25 @@ export class DayStrip extends TileStrip<DayStripProps, {}>
 
         // height={2*parseInt(day_style.borderWidth) + parseInt(day_style.height) + parseInt(day_style.marginTop) + parseInt(day_style.marginBottom)}
         return (
-            <FixedSizeList
-                ref={view => {if (view != null) {(view as FixedSizeList).scrollToItem(Day.since_epoch(new Date), "center"); }}}
-                className="tile-strip"
-                height={160}
-                width={800}
-                itemCount={45000}
-                itemSize={parseInt(tile_style.borderWidth) + parseInt(day_style.width)}
-                layout="horizontal"
-            >
-                {({index, style}) => { return (
-                    <Day offset={index} style={{position: style.position, left: style.left}}/>
-                );}}
-            </FixedSizeList>
+            <div className="tile-strip-parent">
+            <AutoSizer disableHeight={false}>
+                {({height, width}) => (
+                    <FixedSizeList
+                        ref={view => {if (view != null) {(view as FixedSizeList).scrollToItem(Day.since_epoch(new Date), "center"); }}}
+                        className="tile-strip"
+                        height={height}
+                        width={width}
+                        itemCount={45000}
+                        itemSize={parseInt(tile_style.borderWidth) + parseInt(day_style.width)}
+                        layout="horizontal"
+                    >
+                        {({index, style}) => { return (
+                            <Day offset={index} style={{position: style.position, left: style.left}}/>
+                        );}}
+                    </FixedSizeList>
+                )}
+            </AutoSizer>
+            </div>
         );
     }
 }

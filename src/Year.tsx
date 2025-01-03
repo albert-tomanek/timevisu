@@ -1,5 +1,6 @@
 import React from 'react';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
 import { get_css_class, date_from_tuple, Holiday, HOLIDAYS } from './App';
 
@@ -97,19 +98,25 @@ export class YearStrip extends TileStrip<{}, {}>
 
         // height={2*parseInt(day_style.borderWidth) + parseInt(day_style.height) + parseInt(day_style.marginTop) + parseInt(day_style.marginBottom)}
         return (
-            <FixedSizeList
-                ref={view => {if (view != null) {(view as FixedSizeList).scrollToItem(((new Date).getFullYear() - YearStrip.first), "center"); }}}
-                className="tile-strip"
-                height={160}
-                width={800}
-                itemCount={YearStrip.last - YearStrip.first}
-                itemSize={parseInt(tile_style.borderWidth) + parseInt(year_style.width)}
-                layout="horizontal"
-            >
-                {({index, style}) => { return (
-                    <Year offset={index} style={{position: style.position, left: style.left}}/>
-                );}}
-            </FixedSizeList>
+            <div className="tile-strip-parent">
+            <AutoSizer disableHeight={true}>
+                {({height, width}) => (
+                    <FixedSizeList
+                        ref={view => {if (view != null) {(view as FixedSizeList).scrollToItem(((new Date).getFullYear() - YearStrip.first), "center"); }}}
+                        className="tile-strip"
+                        height="11em"
+                        width={width}
+                        itemCount={YearStrip.last - YearStrip.first}
+                        itemSize={parseInt(tile_style.borderWidth) + parseInt(year_style.width)}
+                        layout="horizontal"
+                    >
+                        {({index, style}) => { return (
+                            <Year offset={index} style={{position: style.position, left: style.left}}/>
+                        );}}
+                    </FixedSizeList>
+                )}
+            </AutoSizer>
+            </div>
         );
     }
 }
