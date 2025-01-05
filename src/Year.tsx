@@ -3,7 +3,7 @@ import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
 import { get_css_class, date_from_tuple, Holiday } from './App';
-import { ANNOTATIONS, HOLIDAYS } from './data';
+import { HOLIDAYS, ANNOTATIONS, PERIODS } from './data';
 
 interface YearProps extends TileProps {
     offset: number,
@@ -37,10 +37,6 @@ export class Year extends Tile<YearProps, YearState> {
     }
 
     render_tile() {
-        /* Create holidays */
-        var holiday_divs: (JSX.Element | null)[] = HOLIDAYS
-            .map(h => create_holiday_div(h, this.state.jan1.getTime(), Year.len, 900));
-
         /* Create month markers */
         var month_markers: JSX.Element[] = [];
         for (var d = new Date(this.state.jan1), start_fract = 0, end_fract = 0, i = 0; i < 12 - 1; i++)   // 12 - 1: we don;t need the last month marker
@@ -51,9 +47,9 @@ export class Year extends Tile<YearProps, YearState> {
 
             let annotations: string[] = ANNOTATIONS
                 .filter(a => a.date.length == 2)
-                .filter(a => (a.date[0] == d.getUTCFullYear() && a.date[1] == d.getMonth() + 1))
+                .filter(a => (a.date[0] == d.getUTCFullYear() && a.date[1] == d.getMonth()))
                 .map(a => a.name);
-
+            
             month_markers.push(
                 <div className="month-div" style={{width: (end_fract - start_fract) * 900}} key={d.toUTCString()}>
                     {annotations.length ? (<div className="annotation">{annotations.join('\n')}</div>) : null}
@@ -64,7 +60,7 @@ export class Year extends Tile<YearProps, YearState> {
         return (
             <div className="tile year-tile">
                 {/* <h2 className="day-no">{this.state.jan1.getFullYear()}</h2> */}
-                {holiday_divs}
+                {HOLIDAYS.map(h => create_holiday_div(h, this.state.jan1.getTime(), Year.len, 900))}
                 {month_markers}
                 {this.get_indicator()}
             </div>
@@ -76,11 +72,13 @@ export const create_holiday_div = (
     hday: Holiday,
     block_start: number,
     block_duration: number,
-    block_width_px: number
+    block_width_px: number,
+    color?: string
 ): JSX.Element | null => {
     var start = date_from_tuple(hday['start']);
     var end   = date_from_tuple(hday['end']);
 
+    
     if (end.getTime() < block_start || start.getTime() >= (block_start + block_duration)) {
         return null;
     }
@@ -91,13 +89,14 @@ export const create_holiday_div = (
     if (end.getTime() >= (block_start + block_duration)) {
         end = new Date(block_start + block_duration);
     }
-
+    
     return (
         <div
             className="holiday-block"
             style={{
                 left: ((start.getTime() - block_start) / block_duration * block_width_px).toString() + 'px',
-                width: (((end.getTime() - start.getTime()) / block_duration) * block_width_px).toString() + 'px'
+                width: (((end.getTime() - start.getTime()) / block_duration) * block_width_px).toString() + 'px',
+                background: color!
             }}
         >
         </div>

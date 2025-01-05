@@ -1,4 +1,4 @@
-import { Holiday, Annotation } from "./App";
+import { Holiday, Annotation, Period } from "./App";
 
 export var HOLIDAYS: Holiday[] = [
     // Fake!
@@ -88,6 +88,14 @@ export const ANNOTATIONS: Annotation[] = [
     { date: [2024, 9], name: "Mussomeli" },
     { date: [2024, 10], name: "Sorted out school" },
     { date: [2024, 12], name: "Tried societies" },
+];
+
+export const PERIODS: Period[] = [
+    { name: "Arbury",     color: "navy",      from: [2007, 9], to: [2014, 6] },
+    { name: "Chesterton", color: "lightskyblue", from: [2014, 9], to: [2017, 6, 14] },
+    { name: "Duhovka",    color: "slategray", from: [2017, 9], to: [2021, 7] },
+    { name: "Covid-19",   color: "gray",      from: [2020, 3, 11], to: [2021, 6] },
+    { name: "Sheffield",  color: "green",     from: [2022, 10, 13], to: [2022, 6, 13] }
 ];
 
 export var BDAY: number[] = [2002, 10, 1];

@@ -42,8 +42,15 @@ export interface Annotation {
     date: number[], // variable length, based on labeled unit of time
 }
 
+export interface Period {
+    name: string,
+    color: string,
+    from: number[],
+    to: number[],
+}
+
 export function date_from_tuple (dtup: number[]) {
-    return new Date(dtup[0], dtup[1] - 1, dtup[2]);
+    return new Date(dtup[0], dtup[1] ? dtup[1] - 1 : 0, dtup[2] ?? 1);
 }
 
 /* App */
