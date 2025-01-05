@@ -2,7 +2,8 @@ import React from 'react';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
-import { get_css_class } from './App';
+import { create_holiday_div } from './Year';
+import { HOLIDAYS, get_css_class } from './App';
 
 interface DecadeProps extends TileProps {
     offset: number,
@@ -13,6 +14,8 @@ interface DecadeState extends TileState {
 }
 
 export class Decade extends Tile<DecadeProps, DecadeState> {
+    static len = 1000 * 60 * 60 * 24 * 365 * 10;
+
 	constructor(props: DecadeProps) {
 		super(props);
 
@@ -34,6 +37,7 @@ export class Decade extends Tile<DecadeProps, DecadeState> {
     render_tile() {
         return (
             <div className="tile decade-tile">
+                {HOLIDAYS.map(h => create_holiday_div(h, (new Date(this.state.first_year, 0, 1)).getTime(), Decade.len, 480))}
                 <h2 className="day-no">{this.state.first_year}</h2>
                 {this.get_indicator()}
             </div>

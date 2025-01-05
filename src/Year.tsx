@@ -35,31 +35,10 @@ export class Year extends Tile<YearProps, YearState> {
         }
     }
 
-    create_holiday_div (hday: Holiday) : JSX.Element {
-      var start = date_from_tuple(hday['start']);
-      var end   = date_from_tuple(hday['end']);
-
-      return (
-        <div
-            className="holiday-block"
-            style={{
-                left: ((start.getTime() - this.state.jan1.getTime()) / Year.len * 900).toString() + 'px',
-                width: (((end.getTime() - start.getTime()) / Year.len) * 900).toString() + 'px'
-            }}
-        >
-        </div>
-      );
-    }
-
     render_tile() {
         /* Create holidays */
-        var holiday_divs: JSX.Element[] = [];
-        for (var i = 0; i < HOLIDAYS.length; i++)
-        {
-            if (date_from_tuple(HOLIDAYS[i].start).getFullYear() == this.state.jan1.getFullYear()) {
-                holiday_divs.push(this.create_holiday_div(HOLIDAYS[i]));
-            }
-        }
+        var holiday_divs: (JSX.Element | null)[] = HOLIDAYS
+            .map(h => create_holiday_div(h, this.state.jan1.getTime(), Year.len, 900));
 
         /* Create month markers */
         var month_markers: JSX.Element[] = [];
@@ -81,6 +60,38 @@ export class Year extends Tile<YearProps, YearState> {
             </div>
         );
     }
+}
+
+export const create_holiday_div = (
+    hday: Holiday,
+    block_start: number,
+    block_duration: number,
+    block_width_px: number
+): JSX.Element | null => {
+    var start = date_from_tuple(hday['start']);
+    var end   = date_from_tuple(hday['end']);
+
+    if (end.getTime() < block_start || start.getTime() >= (block_start + block_duration)) {
+        return null;
+    }
+    
+    if (start.getTime() < block_start) {
+        start = new Date(block_start);
+    }
+    if (end.getTime() >= (block_start + block_duration)) {
+        end = new Date(block_start + block_duration);
+    }
+
+    return (
+        <div
+            className="holiday-block"
+            style={{
+                left: ((start.getTime() - block_start) / block_duration * block_width_px).toString() + 'px',
+                width: (((end.getTime() - start.getTime()) / block_duration) * block_width_px).toString() + 'px'
+            }}
+        >
+        </div>
+    );
 }
 
 export class YearStrip extends TileStrip<{}, {}>

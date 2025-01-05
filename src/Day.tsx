@@ -13,7 +13,7 @@ interface DayState extends TileState {
 interface DayProps extends TileProps {
     offset: number,
 }
-//18717
+
 export class Day extends Tile<DayProps, DayState> {
 	constructor(props: DayProps) {
 		super(props);
@@ -67,7 +67,8 @@ export class Day extends Tile<DayProps, DayState> {
     is_holiday(): boolean {
         for (var i = 0; i < HOLIDAYS.length; i++) {
             var start = date_from_tuple(HOLIDAYS[i].start);
-            var end   = date_from_tuple(HOLIDAYS[i].end);
+            // var end   = date_from_tuple(HOLIDAYS[i].end);
+            var end   = date_from_tuple([HOLIDAYS[i].end[0], HOLIDAYS[i].end[1], HOLIDAYS[i].end[2] + 1]);
 
             if (start.getTime() <= this.state.date.getTime() && this.state.date.getTime() < end.getTime())
             {
