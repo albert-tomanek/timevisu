@@ -2,7 +2,8 @@ import React from 'react';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
-import { get_css_class, date_from_tuple, HOLIDAYS } from './App';
+import { get_css_class, date_from_tuple } from './App';
+import { HOLIDAYS } from './data';
 
 /* Day */
 

@@ -3,7 +3,8 @@ import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
 import { create_holiday_div } from './Year';
-import { HOLIDAYS, get_css_class } from './App';
+import { get_css_class } from './App';
+import { HOLIDAYS } from './data';
 
 interface DecadeProps extends TileProps {
     offset: number,

@@ -2,7 +2,8 @@ import React from 'react';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
-import { get_css_class, date_from_tuple, Holiday, HOLIDAYS } from './App';
+import { get_css_class, date_from_tuple, Holiday } from './App';
+import { ANNOTATIONS, HOLIDAYS } from './data';
 
 interface YearProps extends TileProps {
     offset: number,
@@ -48,7 +49,16 @@ export class Year extends Tile<YearProps, YearState> {
             d.setMonth(d.getMonth() + 1);
             end_fract   = (d.getTime() - this.state.jan1.getTime()) / Year.len;
 
-            month_markers.push(<div className="month-div" style={{width: (end_fract - start_fract) * 900}} key={d.toUTCString()}></div>);
+            let annotations: string[] = ANNOTATIONS
+                .filter(a => a.date.length == 2)
+                .filter(a => (a.date[0] == d.getUTCFullYear() && a.date[1] == d.getMonth() + 1))
+                .map(a => a.name);
+
+            month_markers.push(
+                <div className="month-div" style={{width: (end_fract - start_fract) * 900}} key={d.toUTCString()}>
+                    {annotations.length ? (<div className="annotation">{annotations.join('\n')}</div>) : null}
+                </div>
+            );
         }
 
         return (
