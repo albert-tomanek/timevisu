@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/timevisu/static/css/main.b6746750.chunk.css",
-    "main.js": "/timevisu/static/js/main.81887043.chunk.js",
-    "main.js.map": "/timevisu/static/js/main.81887043.chunk.js.map",
+    "main.js": "/timevisu/static/js/main.6266dfde.chunk.js",
+    "main.js.map": "/timevisu/static/js/main.6266dfde.chunk.js.map",
     "runtime-main.js": "/timevisu/static/js/runtime-main.ed9720c6.js",
     "runtime-main.js.map": "/timevisu/static/js/runtime-main.ed9720c6.js.map",
-    "static/js/2.97d49f29.chunk.js": "/timevisu/static/js/2.97d49f29.chunk.js",
-    "static/js/2.97d49f29.chunk.js.map": "/timevisu/static/js/2.97d49f29.chunk.js.map",
+    "static/js/2.d0d66aff.chunk.js": "/timevisu/static/js/2.d0d66aff.chunk.js",
+    "static/js/2.d0d66aff.chunk.js.map": "/timevisu/static/js/2.d0d66aff.chunk.js.map",
     "static/js/3.29ea67d2.chunk.js": "/timevisu/static/js/3.29ea67d2.chunk.js",
     "static/js/3.29ea67d2.chunk.js.map": "/timevisu/static/js/3.29ea67d2.chunk.js.map",
     "index.html": "/timevisu/index.html",
     "static/css/main.b6746750.chunk.css.map": "/timevisu/static/css/main.b6746750.chunk.css.map",
-    "static/js/2.97d49f29.chunk.js.LICENSE.txt": "/timevisu/static/js/2.97d49f29.chunk.js.LICENSE.txt"
+    "static/js/2.d0d66aff.chunk.js.LICENSE.txt": "/timevisu/static/js/2.d0d66aff.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ed9720c6.js",
-    "static/js/2.97d49f29.chunk.js",
+    "static/js/2.d0d66aff.chunk.js",
     "static/css/main.b6746750.chunk.css",
-    "static/js/main.81887043.chunk.js"
+    "static/js/main.6266dfde.chunk.js"
   ]
 }
