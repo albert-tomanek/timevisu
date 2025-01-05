@@ -112,9 +112,9 @@ export var HOLIDAYS: Holiday[] = [
     {"name": "Den boje za dem.",    "start": [2024, 11, 17], "end": [2024, 11, 17]},
     
     {"name": "Vánoční prázdniny",   "start": [2024, 12, 23], "end": [2025,  1,  3]},
-    {"name": "Zkouškové období ZS", "start": [2024,  1, 13], "end": [2025,  2, 16]},
+    {"name": "Zkouškové období ZS", "start": [2025,  1, 13], "end": [2025,  2, 16]},
     {"name": "Velikonoc. prázdniny","start": [2025,  4, 17], "end": [2025,  4, 21]},
-    {"name": "Zkouškové období LS", "start": [2024,  5, 26], "end": [2025,  6, 30]},
+    {"name": "Zkouškové období LS", "start": [2025,  5, 26], "end": [2025,  6, 30]},
     {"name": "Summer holidays",     "start": [2025,  6, 28], "end": [2025,  9, 31]},
     {"name": "Den české státnosti", "start": [2025,  9, 28], "end": [2025,  9, 29]},
     {"name": "Podzimní prázdniny",  "start": [2025, 10, 27], "end": [2025, 10, 29]},
