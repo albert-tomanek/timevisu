@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/timevisu/static/css/main.4cec486f.chunk.css",
-    "main.js": "/timevisu/static/js/main.7edd80fe.chunk.js",
-    "main.js.map": "/timevisu/static/js/main.7edd80fe.chunk.js.map",
+    "main.js": "/timevisu/static/js/main.c5d51165.chunk.js",
+    "main.js.map": "/timevisu/static/js/main.c5d51165.chunk.js.map",
     "runtime-main.js": "/timevisu/static/js/runtime-main.2f33e604.js",
     "runtime-main.js.map": "/timevisu/static/js/runtime-main.2f33e604.js.map",
     "static/js/2.579530a9.chunk.js": "/timevisu/static/js/2.579530a9.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.2f33e604.js",
     "static/js/2.579530a9.chunk.js",
     "static/css/main.4cec486f.chunk.css",
-    "static/js/main.7edd80fe.chunk.js"
+    "static/js/main.c5d51165.chunk.js"
   ]
 }
