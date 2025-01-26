@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { FixedSizeListProps, FixedSizeList } from 'react-window';
 import { TileState, TileProps, Tile, TileStrip } from './Tile';
+import GoogleAuthButton from './GoogleAuthButton';
 
 // import { Decade, DecadeStrip } from './Decade';
 const { Day, DayStrip }       = require('./Day.tsx');
@@ -58,6 +59,7 @@ export function date_from_tuple (dtup: number[]) {
 function App() {
     return (
         <div className="App">
+            <GoogleAuthButton />
             <h2>Days</h2>
             <DayStrip/>
             <h2>Years</h2>

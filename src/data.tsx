@@ -69,7 +69,7 @@ export var HOLIDAYS: Holiday[] = [
     {"name": "Pololetní prázdniny", "start": [2024,  2,  2], "end": [2024,  2,  2]},
     {"name": "Jarní prázdniny",     "start": [2024,  2,  5], "end": [2024,  2, 11]},
     {"name": "Velikonoc. prázdniny","start": [2024,  3, 28], "end": [2024,  4,  1]},
-    {"name": "Summer holidays",     "start": [2024,  6, 29], "end": [2024,  9,  1]},
+    {"name": "Summer holidays",     "start": [2024,  6, 29], "end": [2024,  9, 31]},
     {"name": "Den české státnosti", "start": [2024,  9, 28], "end": [2024,  9, 28]},
     {"name": "Podzimní prázdniny",  "start": [2024, 10, 26], "end": [2024, 10, 30]},
     {"name": "Den boje za dem.",    "start": [2024, 11, 17], "end": [2024, 11, 17]},
@@ -85,6 +85,8 @@ export var HOLIDAYS: Holiday[] = [
 ];
 
 export const ANNOTATIONS: Annotation[] = [
+    { date: [2024, 7], name: "Leipzig" },
+    { date: [2024, 8], name: "Kae & Hronov" },
     { date: [2024, 9], name: "Mussomeli" },
     { date: [2024, 10], name: "Sorted out school" },
     { date: [2024, 12], name: "Tried societies" },
@@ -94,8 +96,8 @@ export const PERIODS: Period[] = [
     { name: "Arbury",     color: "navy",      from: [2007, 9], to: [2014, 6] },
     { name: "Chesterton", color: "lightskyblue", from: [2014, 9], to: [2017, 6, 14] },
     { name: "Duhovka",    color: "slategray", from: [2017, 9], to: [2021, 7] },
-    { name: "Covid-19",   color: "gray",      from: [2020, 3, 11], to: [2021, 6] },
-    { name: "Sheffield",  color: "green",     from: [2022, 10, 13], to: [2022, 6, 13] }
+    { name: "Covid-19",   color: "purple",      from: [2020, 3, 11], to: [2021, 6] },
+    { name: "Sheffield",  color: "green",     from: [2022, 10, 13], to: [2023, 6, 13] },
 ];
 
 export var BDAY: number[] = [2002, 10, 1];

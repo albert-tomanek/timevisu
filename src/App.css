@@ -42,7 +42,7 @@
 
   border: 4px solid #161616;
   /* margin: 20px 0; */
-  margin-bottom: 60px;      /* This space is used for annotations */
+  margin-bottom: 80px;      /* This space is used for annotations */
 
   user-select: none;
 }
@@ -100,6 +100,7 @@
     font-weight: bold;
     font-size: 14pt;
     color: mediumblue;
+    user-select: none;
 
     /* border-image-source: linear-gradient(to top, black, transparent); */
     border-image-slice: 1;
@@ -126,6 +127,9 @@
 
   position: relative;   /* "This will allow the child element, when set to position: absolute, to be positioned relative to the parent element." */
 }
+.month-div:hover {
+  background: #51c5fb40
+}
 .holiday-block {
   position: absolute;
   height: 48px;
@@ -136,9 +140,9 @@
 .annotation {
   position: absolute;
   left: 30%;
-  padding-top: 70%;
+  padding-top: 44px;
   padding-left: 6px;
-  margin-top: 20%;
+  margin-top: 16px;
   border-left: 3px solid #333;
 }
 

@@ -39,19 +39,32 @@ export class Year extends Tile<YearProps, YearState> {
     render_tile() {
         /* Create month markers */
         var month_markers: JSX.Element[] = [];
-        for (var d = new Date(this.state.jan1), start_fract = 0, end_fract = 0, i = 0; i < 12 - 1; i++)   // 12 - 1: we don;t need the last month marker
+        for (var d = new Date(this.state.jan1), start_pct = 0, end_pct = 0, i = 0; i < 12; i++)
         {
-            start_fract = (d.getTime() - this.state.jan1.getTime()) / Year.len;
-            d.setMonth(d.getMonth() + 1);
-            end_fract   = (d.getTime() - this.state.jan1.getTime()) / Year.len;
-
             let annotations: string[] = ANNOTATIONS
                 .filter(a => a.date.length == 2)
-                .filter(a => (a.date[0] == d.getUTCFullYear() && a.date[1] == d.getMonth()))
+                .filter(a => (a.date[0] == d.getUTCFullYear() && a.date[1] - 1 == d.getMonth()))
                 .map(a => a.name);
+
+            if (d.getUTCFullYear() == 2024) {
+                console.log(ANNOTATIONS.map(a => a.date[1].toString()).join(','), d.getMonth());
+            }
+
+            //
+            start_pct = (d.getTime() - this.state.jan1.getTime()) / Year.len;
+            d.setMonth(d.getMonth() + 1);
+            end_pct   = (d.getTime() - this.state.jan1.getTime()) / Year.len;
             
             month_markers.push(
-                <div className="month-div" style={{width: (end_fract - start_fract) * 900}} key={d.toUTCString()}>
+                <div className="month-div" style={{
+                        width: (end_pct - start_pct) * 900,
+                        ...(i == 11 ? {
+                            borderRight: "none",
+                            width: (end_pct - start_pct) * 900 * 0.8    // The last one doesn't fit at full width for whatever reason
+                        } : {})
+                    }}
+                    key={d.toUTCString()}
+                >
                     {annotations.length ? (<div className="annotation">{annotations.join('\n')}</div>) : null}
                 </div>
             );
@@ -78,17 +91,28 @@ export const create_holiday_div = (
     var start = date_from_tuple(hday['start']);
     var end   = date_from_tuple(hday['end']);
 
-    
+    // Quit if the event isn't within this time block
     if (end.getTime() < block_start || start.getTime() >= (block_start + block_duration)) {
         return null;
     }
     
+    // Clip event to block bounds
     if (start.getTime() < block_start) {
         start = new Date(block_start);
     }
     if (end.getTime() >= (block_start + block_duration)) {
         end = new Date(block_start + block_duration);
     }
+
+    // Expand to include adjascent weekends
+    if (start.getDay() == 1) {  // Moday
+        start.setDate(start.getDate() - 2); // to Saturday
+    }
+    if (end.getDay() == 5) {  // Friday
+        end.setDate(end.getDate() + 2); // to Sunday
+    }
+
+    end.setDate(end.getDate() + 1); // Include the whole of the end day up until midnight as well
     
     return (
         <div
